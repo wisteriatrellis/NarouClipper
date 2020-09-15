@@ -2,6 +2,7 @@ package com.unlimtech.narouclipper
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 
@@ -10,10 +11,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val text: TextView = findViewById<TextView>(R.id.textView) as TextView
         val clipButton: Button = findViewById<Button>(R.id.clipButton) as Button
-        clipButton.setOnClickListener {
-            text.text = "change!"
+        clipButton.setOnClickListener(ClipButtonListener())
+    }
+
+    private inner class ClipButtonListener : View.OnClickListener {
+        override fun onClick(v: View?) {
+            val myText: TextView = findViewById<TextView>(R.id.textView) as TextView
+            myText.text = "change!"
         }
     }
 }
