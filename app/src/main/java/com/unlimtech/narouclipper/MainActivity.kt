@@ -1,5 +1,8 @@
 package com.unlimtech.narouclipper
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -19,6 +22,9 @@ class MainActivity : AppCompatActivity() {
         override fun onClick(v: View?) {
             val myText: TextView = findViewById<TextView>(R.id.textView) as TextView
             myText.text = "change!"
+
+            val clipboardManager: ClipboardManager = applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            clipboardManager.setPrimaryClip(ClipData.newPlainText("this is the novel content", myText.text))
         }
     }
 }
