@@ -5,11 +5,13 @@ import android.content.ClipboardManager
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.TextView
+import org.jsoup.Jsoup
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,22 +33,16 @@ class MainActivity : AppCompatActivity() {
             )
             urlForm.setAdapter(adapter)
 
-            /*
-            ---------------------------------------------------------
-                html parse
-             */
-
+            val parseHtmlTask: ParseHtmlTask = ParseHtmlTask()
+            parseHtmlTask.execute(urlForm.text)
 
             val clipboardManager: ClipboardManager = applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clipData: ClipData = ClipData.newPlainText(
                 "this is the novel content",
-                urlForm.text
+                "parseHtmlTask.get()"
             )
             clipboardManager.setPrimaryClip(clipData)
         }
 
-        private fun parse(url: String) {
-
-        }
     }
 }
