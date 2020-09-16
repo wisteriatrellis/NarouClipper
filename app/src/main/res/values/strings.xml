@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">NarouClipper</string>
     <string name="clip_button">Clip</string>
+    <string name="url_input_text_view"></string>
 </resources>

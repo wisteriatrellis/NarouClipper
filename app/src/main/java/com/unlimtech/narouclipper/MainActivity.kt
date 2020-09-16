@@ -6,6 +6,8 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.TextView
 
@@ -20,11 +22,31 @@ class MainActivity : AppCompatActivity() {
 
     private inner class ClipButtonListener : View.OnClickListener {
         override fun onClick(v: View?) {
-            val myText: TextView = findViewById<TextView>(R.id.textView) as TextView
-            myText.text = "change!"
+            val urlForm: AutoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.urlInputTextView) as AutoCompleteTextView
+            val inputLog: MutableList<String> = mutableListOf("hello", "world", "hogehoge", "help", "work")
+            val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
+                applicationContext,
+                android.R.layout.simple_dropdown_item_1line,
+                inputLog
+            )
+            urlForm.setAdapter(adapter)
+
+            /*
+            ---------------------------------------------------------
+                html parse
+             */
+
 
             val clipboardManager: ClipboardManager = applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            clipboardManager.setPrimaryClip(ClipData.newPlainText("this is the novel content", myText.text))
+            val clipData: ClipData = ClipData.newPlainText(
+                "this is the novel content",
+                urlForm.text
+            )
+            clipboardManager.setPrimaryClip(clipData)
+        }
+
+        private fun parse(url: String) {
+
         }
     }
 }
