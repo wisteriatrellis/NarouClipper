@@ -8,11 +8,12 @@ import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 
 class ParseHtmlTask : AsyncTask<String, String, String>() {
+    private val host: String = "https://ncode.syosetu.com/"
 
     override fun doInBackground(vararg params: String): String {
         val path = params[0]
         Log.d("myDebug", path)
-        return parse("https://ncode.syosetu.com/$path")
+        return parse("$host$path")
     }
 
     override fun onPostExecute(result: String) {
@@ -28,7 +29,7 @@ class ParseHtmlTask : AsyncTask<String, String, String>() {
         /*
         例外処理必要
          */
-        val content = document
+        val content: String = document
             .selectFirst("div#novel_honbun")
             .select("p")
             .joinToString("") {

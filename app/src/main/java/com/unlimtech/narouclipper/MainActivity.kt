@@ -15,7 +15,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // set candidates of input in AutoCompleteTextView
         val urlForm: AutoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.urlInputTextView) as AutoCompleteTextView
         val adapter: ArrayAdapter<String> = createAdapter()
         urlForm.setAdapter(adapter)
