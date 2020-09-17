@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">NarouClipper</string>
-    <string name="clip_button">Clip</string>
     <string name="url_input_text_view"></string>
+    <string name="url_input_text_view_hint">path for full URL</string>
+    <string name="host_text_view">https://ncode.syosetu.com/</string>
+    <string name="clip_button">Clip</string>
+
 </resources>
