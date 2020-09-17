@@ -5,36 +5,45 @@ import android.content.ClipboardManager
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.Button
-import android.widget.TextView
-import org.jsoup.Jsoup
+import android.widget.*
 
 class MainActivity : AppCompatActivity() {
+    private val inputLog: MutableList<String> = mutableListOf("hello", "world", "hogehoge", "help", "work", "hel", "helt")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // set candidates of input in AutoCompleteTextView
+        val urlForm: AutoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.urlInputTextView) as AutoCompleteTextView
+        val adapter: ArrayAdapter<String> = createAdapter()
+        urlForm.setAdapter(adapter)
+        urlForm.threshold = 0
 
         val clipButton: Button = findViewById<Button>(R.id.clipButton) as Button
         clipButton.setOnClickListener(ClipButtonListener())
     }
 
+    private fun createAdapter(path: String = ""): ArrayAdapter<String> {
+        if (path != "") {
+            inputLog.remove(path)
+            inputLog.add(0, path)
+        }
+        return ArrayAdapter<String>(
+            this,
+            android.R.layout.simple_dropdown_item_1line,
+            inputLog
+        )
+    }
+
     private inner class ClipButtonListener : View.OnClickListener {
         override fun onClick(v: View?) {
             val urlForm: AutoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.urlInputTextView) as AutoCompleteTextView
-            val inputLog: MutableList<String> = mutableListOf("hello", "world", "hogehoge", "help", "work")
-            val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
-                applicationContext,
-                android.R.layout.simple_dropdown_item_1line,
-                inputLog
-            )
-            urlForm.setAdapter(adapter)
+            val path: String = StringBuilder(urlForm.text).toString()
 
             val parseHtmlTask: ParseHtmlTask = ParseHtmlTask()
-            parseHtmlTask.execute(urlForm.text)
+            parseHtmlTask.execute(path)
 
             val clipboardManager: ClipboardManager = applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clipData: ClipData = ClipData.newPlainText(
@@ -42,7 +51,9 @@ class MainActivity : AppCompatActivity() {
                 parseHtmlTask.get()
             )
             clipboardManager.setPrimaryClip(clipData)
-        }
 
+            val adapter: ArrayAdapter<String> = createAdapter(path)
+            urlForm.setAdapter(adapter)
+        }
     }
 }

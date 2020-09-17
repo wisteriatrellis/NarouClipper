@@ -7,15 +7,15 @@ import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 
-class ParseHtmlTask : AsyncTask<CharSequence, CharSequence, CharSequence>() {
+class ParseHtmlTask : AsyncTask<String, String, String>() {
 
-    override fun doInBackground(vararg params: CharSequence): CharSequence {
-        val url = StringBuilder(params[0]).toString()
-        Log.d("myDebug", url)
-        return parse(url)
+    override fun doInBackground(vararg params: String): String {
+        val path = params[0]
+        Log.d("myDebug", path)
+        return parse("https://ncode.syosetu.com/$path")
     }
 
-    override fun onPostExecute(result: CharSequence) {
+    override fun onPostExecute(result: String) {
 
     }
 
@@ -32,7 +32,7 @@ class ParseHtmlTask : AsyncTask<CharSequence, CharSequence, CharSequence>() {
             .selectFirst("div#novel_honbun")
             .select("p")
             .joinToString("") {
-                it.text() + "\n"
+                "${it.text()}\n"
             }
 
         Log.d("myDebug", "OK")
