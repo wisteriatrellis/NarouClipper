@@ -4,6 +4,8 @@ import android.os.AsyncTask
 import android.util.Log
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
+import org.jsoup.select.Elements
 
 class ParseHtmlTask : AsyncTask<CharSequence, CharSequence, CharSequence>() {
 
@@ -20,11 +22,21 @@ class ParseHtmlTask : AsyncTask<CharSequence, CharSequence, CharSequence>() {
     private fun parse(url: String) : String{
         Log.d("myDebug", "before")
         val document: Document = Jsoup
-            .connect("https://jsoup.org/apidocs/org/jsoup/select/Selector.html")
+            .connect("https://ncode.syosetu.com/n3808fy/1/")
             .get()
-        Log.d("myDebug", "OK")
-        Log.d("myDebug", document.html())
-        return document.html()
-    }
 
+        /*
+        例外処理必要
+         */
+        val content = document
+            .selectFirst("div#novel_honbun")
+            .select("p")
+            .joinToString("") {
+                it.text() + "\n"
+            }
+
+        Log.d("myDebug", "OK")
+        Log.d("myDebug", content)
+        return content
+    }
 }

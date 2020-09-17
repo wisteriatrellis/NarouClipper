@@ -18,14 +18,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/urlInputTextView" />
 
-    <AutoCompleteTextView
-        android:id="@+id/urlInputTextView"
+    <TextView
+        android:id="@+id/hostTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="TextView"
+        app:layout_constraintBaseline_toBaselineOf="@+id/urlInputTextView"
+        app:layout_constraintEnd_toStartOf="@+id/urlInputTextView"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <AutoCompleteTextView
+        android:id="@+id/urlInputTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
         android:text="@string/url_input_text_view"
         app:layout_constraintBottom_toTopOf="@+id/clipButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/hostTextView"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

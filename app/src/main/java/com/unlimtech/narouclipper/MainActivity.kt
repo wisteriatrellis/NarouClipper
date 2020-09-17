@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             val clipboardManager: ClipboardManager = applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clipData: ClipData = ClipData.newPlainText(
                 "this is the novel content",
-                "parseHtmlTask.get()"
+                parseHtmlTask.get()
             )
             clipboardManager.setPrimaryClip(clipData)
         }
