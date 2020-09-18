@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         val urlForm: AutoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.urlInputTextView) as AutoCompleteTextView
         val adapter: ArrayAdapter<String> = createAdapter()
         urlForm.setAdapter(adapter)
-        urlForm.threshold = 0
+        urlForm.threshold = 1
 
         val clipButton: Button = findViewById<Button>(R.id.clipButton) as Button
         clipButton.setOnClickListener(ClipButtonListener())
@@ -47,12 +47,23 @@ class MainActivity : AppCompatActivity() {
             val adapter: ArrayAdapter<String> = createAdapter(path)
             urlForm.setAdapter(adapter)
 
+            val resultOfParse: String = parseHtmlTask.get()
             val clipboardManager: ClipboardManager = applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clipData: ClipData = ClipData.newPlainText(
                 "this is the novel content",
-                parseHtmlTask.get()
+                resultOfParse
             )
             clipboardManager.setPrimaryClip(clipData)
+
+            Toast
+                .makeText(
+                    GlobalApplication
+                        .instance
+                        .applicationContext,
+                    parseHtmlTask.status,
+                    Toast.LENGTH_SHORT
+                )
+                .show()
         }
     }
 }

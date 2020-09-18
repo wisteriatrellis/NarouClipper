@@ -2,20 +2,18 @@ package com.unlimtech.narouclipper
 
 import android.os.AsyncTask
 import android.util.Log
-import android.widget.Toast
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import org.jsoup.nodes.Element
-import org.jsoup.select.Elements
 import java.lang.Exception
 
 class ParseHtmlTask : AsyncTask<String, String, String>() {
-    private val host: String = "https://ncode.syosetu.com/"
+    var status: String = SUCCESS_TO_CLIP
+        private set
 
     override fun doInBackground(vararg params: String): String {
         val path = params[0]
         Log.d("myDebug", path)
-        return parse("$host$path")
+        return parse("$HOST$path")
     }
 
     override fun onPostExecute(result: String) {
@@ -29,16 +27,9 @@ class ParseHtmlTask : AsyncTask<String, String, String>() {
                 .connect(url)
                 .get()
         } catch (e: Exception) {
-            /*Toast
-                .makeText(
-                    context,
-                    "",
-                    Toast.LENGTH_LONG
-                )
-                .show()*/
-            Log.d("myDebug", "fail to connect to the URL")
             Log.d("myDebug", e.toString())
-            return ""
+            this.status = FAILURE_TO_CONNECT
+            return this.status
         }
 
         val content: String
@@ -50,14 +41,19 @@ class ParseHtmlTask : AsyncTask<String, String, String>() {
                     "${it.text()}\n"
                 }
         } catch (e: Exception) {
-            Log.d("myDebug", "fail to read the content")
             Log.d("myDebug", e.toString())
-            return ""
+            this.status = FAILURE_TO_READ
+            return this.status
         }
 
-        // clipdataのあとに移動したい
-        Log.d("myDebug", "success to clip the content")
         Log.d("myDebug", content)
         return content
+    }
+
+    companion object {
+        private const val HOST: String = "https://ncode.syosetu.com/"
+        private const val FAILURE_TO_CONNECT = "failure to connect to the URL"
+        private const val FAILURE_TO_READ = "failure to read the content"
+        private const val SUCCESS_TO_CLIP = "success to clip the content"
     }
 }
