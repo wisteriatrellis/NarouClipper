@@ -44,15 +44,15 @@ class MainActivity : AppCompatActivity() {
             val parseHtmlTask: ParseHtmlTask = ParseHtmlTask()
             parseHtmlTask.execute(path)
 
+            val adapter: ArrayAdapter<String> = createAdapter(path)
+            urlForm.setAdapter(adapter)
+
             val clipboardManager: ClipboardManager = applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clipData: ClipData = ClipData.newPlainText(
                 "this is the novel content",
                 parseHtmlTask.get()
             )
             clipboardManager.setPrimaryClip(clipData)
-
-            val adapter: ArrayAdapter<String> = createAdapter(path)
-            urlForm.setAdapter(adapter)
         }
     }
 }

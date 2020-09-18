@@ -2,10 +2,12 @@ package com.unlimtech.narouclipper
 
 import android.os.AsyncTask
 import android.util.Log
+import android.widget.Toast
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
+import java.lang.Exception
 
 class ParseHtmlTask : AsyncTask<String, String, String>() {
     private val host: String = "https://ncode.syosetu.com/"
@@ -21,22 +23,40 @@ class ParseHtmlTask : AsyncTask<String, String, String>() {
     }
 
     private fun parse(url: String) : String{
-        Log.d("myDebug", "before")
-        val document: Document = Jsoup
-            .connect("https://ncode.syosetu.com/n3808fy/1/")
-            .get()
+        val document: Document
+        try {
+            document = Jsoup
+                .connect(url)
+                .get()
+        } catch (e: Exception) {
+            /*Toast
+                .makeText(
+                    context,
+                    "",
+                    Toast.LENGTH_LONG
+                )
+                .show()*/
+            Log.d("myDebug", "fail to connect to the URL")
+            Log.d("myDebug", e.toString())
+            return ""
+        }
 
-        /*
-        例外処理必要
-         */
-        val content: String = document
-            .selectFirst("div#novel_honbun")
-            .select("p")
-            .joinToString("") {
-                "${it.text()}\n"
-            }
+        val content: String
+        try {
+            content = document
+                .selectFirst("div#novel_honbun")
+                .select("p")
+                .joinToString("") {
+                    "${it.text()}\n"
+                }
+        } catch (e: Exception) {
+            Log.d("myDebug", "fail to read the content")
+            Log.d("myDebug", e.toString())
+            return ""
+        }
 
-        Log.d("myDebug", "OK")
+        // clipdataのあとに移動したい
+        Log.d("myDebug", "success to clip the content")
         Log.d("myDebug", content)
         return content
     }
