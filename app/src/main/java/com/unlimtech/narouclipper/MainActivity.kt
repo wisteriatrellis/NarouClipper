@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createAdapter(path: String = ""): ArrayAdapter<String> {
-        if (path != "") {
+        if (path.isNotEmpty()) {
             inputLog.remove(path)
             inputLog.add(0, path)
         }

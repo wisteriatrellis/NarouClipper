@@ -1,3 +1,10 @@
+
+/*
+ * jsoup <https://jsoup.org/>
+ * Copyright (c) 2009-2020 Jonathan Hedley
+ * The MIT License <https://jsoup.org/license>
+ */
+
 package com.unlimtech.narouclipper
 
 import android.os.AsyncTask
