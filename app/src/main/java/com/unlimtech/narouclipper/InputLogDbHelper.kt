@@ -17,7 +17,7 @@ class InputLogDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
     companion object {
         const val DATABASE_VERSION = 1
         const val DATABASE_NAME = "InputLog.db"
-        const val SQL_CREATE_USER_LOG = "CREATE TABLE IF NOT EXISTS input_log (path TEXT PRIMARY KEY);"
+        const val SQL_CREATE_USER_LOG = "CREATE TABLE IF NOT EXISTS input_log (path TEXT PRIMARY KEY)"
         const val SQL_DELETE_USER_LOG = "DROP TABLE IF EXISTS input_log"
     }
 }

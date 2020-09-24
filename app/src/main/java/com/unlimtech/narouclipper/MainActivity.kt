@@ -5,11 +5,13 @@ import android.content.ClipboardManager
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 
 class MainActivity : AppCompatActivity() {
-    private val inputLog: MutableList<String> = mutableListOf("hello", "world", "hogehoge", "help", "work", "hel", "helt")
+    private val dbHelper: InputLogDbHelper = InputLogDbHelper(this)
+    private val inputLog: MutableList<String> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +24,39 @@ class MainActivity : AppCompatActivity() {
 
         val clipButton: Button = findViewById<Button>(R.id.clipButton) as Button
         clipButton.setOnClickListener(ClipButtonListener())
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        if (inputLog.isNotEmpty()) {
+            return
+        }
+
+        val readableDB = dbHelper.readableDatabase
+        val cursor = readableDB.rawQuery("SELECT path FROM input_log;", null)
+
+        cursor.moveToPosition(-1)
+        while (cursor.moveToNext()) {
+            inputLog.add(cursor.getString(cursor.getColumnIndex("path")))
+            Log.d("my", "read DB " + cursor.getString(cursor.getColumnIndex("path")))
+        }
+        cursor.close()
+        readableDB.close()
+        Log.d("my", "success onStart")
+    }
+
+    override fun onStop() {
+        val writableDB = dbHelper.writableDatabase
+        writableDB.execSQL("delete from input_log;")
+
+        inputLog.forEach {
+            writableDB.execSQL("insert into input_log(path) values('$it');")
+            Log.d("my", "save DB $it")
+        }
+        writableDB.close()
+        Log.d("my", "onStop success")
+        super.onStop()
     }
 
     private fun createAdapter(path: String = ""): ArrayAdapter<String> {
