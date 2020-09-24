@@ -23,10 +23,6 @@ class ParseHtmlTask : AsyncTask<String, String, String>() {
         return parse("$HOST$path")
     }
 
-    override fun onPostExecute(result: String) {
-
-    }
-
     private fun parse(url: String) : String{
         val document: Document
         try {
