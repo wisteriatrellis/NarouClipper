@@ -12,6 +12,8 @@ import android.widget.*
 class MainActivity : AppCompatActivity() {
     private val dbHelper: InputLogDbHelper = InputLogDbHelper(this)
     private val inputLog: MutableList<String> = mutableListOf()
+    private var readDatabase: DatabaseIO = DatabaseIO(DbOperation.READ, dbHelper, inputLog)
+    private var writeDatabase: DatabaseIO = DatabaseIO(DbOperation.WRITE, dbHelper, inputLog)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,31 +34,19 @@ class MainActivity : AppCompatActivity() {
         if (inputLog.isNotEmpty()) {
             return
         }
-
-        val readableDB = dbHelper.readableDatabase
-        val cursor = readableDB.rawQuery("SELECT path FROM input_log;", null)
-
-        cursor.moveToPosition(-1)
-        while (cursor.moveToNext()) {
-            inputLog.add(cursor.getString(cursor.getColumnIndex("path")))
-            Log.d("my", "read DB " + cursor.getString(cursor.getColumnIndex("path")))
-        }
-        cursor.close()
-        readableDB.close()
-        Log.d("my", "success onStart")
+        readDatabase.execute()
     }
 
     override fun onStop() {
-        val writableDB = dbHelper.writableDatabase
-        writableDB.execSQL("delete from input_log;")
-
-        inputLog.forEach {
-            writableDB.execSQL("insert into input_log(path) values('$it');")
-            Log.d("my", "save DB $it")
-        }
-        writableDB.close()
-        Log.d("my", "onStop success")
+        writeDatabase.execute()
         super.onStop()
+    }
+
+    override fun onDestroy() {
+        readDatabase.closeDB()
+        writeDatabase.closeDB()
+        Log.d("my", "onDestroy success")
+        super.onDestroy()
     }
 
     private fun createAdapter(path: String = ""): ArrayAdapter<String> {
