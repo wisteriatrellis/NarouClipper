@@ -34,10 +34,12 @@ class MainActivity : AppCompatActivity() {
         if (inputLog.isNotEmpty()) {
             return
         }
+        readDatabase = DatabaseIO(readDatabase)
         readDatabase.execute()
     }
 
     override fun onStop() {
+        writeDatabase = DatabaseIO(writeDatabase)
         writeDatabase.execute()
         super.onStop()
     }

@@ -7,9 +7,16 @@ import android.util.Log
 class DatabaseIO(
     private val dbOperation: DbOperation,
     private val dbHelper: InputLogDbHelper,
-    private val inputLog: MutableList<String>
+    private val inputLog: MutableList<String>,
+    private var db: SQLiteDatabase? = null
 ) : AsyncTask<Unit, String, Unit>() {
-    var db: SQLiteDatabase? = null
+
+    constructor(other: DatabaseIO) : this(
+            other.dbOperation,
+            other.dbHelper,
+            other.inputLog,
+            other.db
+        )
 
     override fun doInBackground(vararg params: Unit) {
         when (dbOperation) {
