@@ -37,7 +37,7 @@ class ParseHtmlTask : AsyncTask<String, String, String>() {
 
         val content: String
         try {
-            content = document
+            content = document.title() + "\n\n" + document
                 .selectFirst("div#novel_honbun")
                 .select("p")
                 .joinToString("") {
