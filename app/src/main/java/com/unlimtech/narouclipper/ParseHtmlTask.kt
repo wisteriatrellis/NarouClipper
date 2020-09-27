@@ -57,6 +57,6 @@ class ParseHtmlTask : AsyncTask<String, String, String>() {
         private const val HOST: String = "https://ncode.syosetu.com/"
         private const val FAILURE_TO_CONNECT = "failure to connect to the URL"
         private const val FAILURE_TO_READ = "failure to read the content"
-        private const val SUCCESS_TO_CLIP = "success to clip the content"
+        const val SUCCESS_TO_CLIP = "success to clip the content"
     }
 }

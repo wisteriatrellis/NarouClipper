@@ -3,6 +3,7 @@ package com.unlimtech.narouclipper
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -91,6 +92,15 @@ class MainActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 )
                 .show()
+
+            if (parseHtmlTask.status == ParseHtmlTask.SUCCESS_TO_CLIP) {
+                val intent = Intent(Intent.ACTION_MAIN)
+                intent.setClassName(
+                    "com.ktix007.talk",
+                    "com.ktix007.talk.Navigation.MainActivity"
+                )
+                startActivity(intent)
+            }
         }
     }
 }
